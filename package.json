@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
+  },
+  "dependencies": {
+    "react-qr-code": "^2.0.18"
   }
 }

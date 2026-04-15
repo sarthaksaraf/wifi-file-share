@@ -3,6 +3,7 @@ const multer = require('multer');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const app = express();
 const PORT = 8080;
@@ -52,6 +53,17 @@ app.get('/api/channel/:channel/uploads/:filename', (req, res) => {
 });
 
 // API Routes
+app.get('/api/network-ip', (req, res) => {
+  const nets = os.networkInterfaces();
+  for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+      if (net.family === 'IPv4' && !net.internal) {
+        return res.json({ ip: net.address });
+      }
+    }
+  }
+  res.json({ ip: '127.0.0.1' });
+});
 app.get('/api/channels', (req, res) => {
   const channels = fs.readdirSync(BASE_DIR)
     .filter(c => fs.statSync(path.join(BASE_DIR, c)).isDirectory())
