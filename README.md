@@ -4,8 +4,11 @@ A simple, fast, and beautiful **local WiFi file & text sharing** app built with 
 
 Share files, images, and notes instantly between devices (phone, laptop, tablet) connected to the **same WiFi** — no internet required.
 
-![WiFi Share Preview](https://via.placeholder.com/800x400/1e1e1e/4fc1ff?text=WiFi+Share+Screenshot)
+### Screenshots
 
+![WiFi Share Main Interface](images/screenshot-1.png)
+
+![Share Modal with QR Code](images/screenshot-2.png)
 ## ✨ Features
 
 - ✅ Create multiple **Channels** (like separate rooms)
