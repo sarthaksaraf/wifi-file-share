@@ -162,12 +162,12 @@ function App() {
           {files.map(f => (
             <div key={f} className="file-card">
               {/\.(png|jpg|jpeg|gif|webp)$/i.test(f) && (
-                <img src={`/api/channel/${currentChannel}/uploads/${f}`} alt={f} />
+                <img src={`/api/channel/${currentChannel}/uploads/${encodeURIComponent(f)}`} alt={f} />
               )}
-              <a href={`/api/channel/${currentChannel}/uploads/${f}`} target="_blank" rel="noopener noreferrer">
+              <a href={`/api/channel/${currentChannel}/uploads/${encodeURIComponent(f)}`} download={f} target="_blank" rel="noopener noreferrer">
                 {f}
               </a>
-              <a href="#" className="delete-btn" onClick={() => deleteFile(f)}>DELETE</a>
+              <a href="#" className="delete-btn" onClick={(e) => { e.preventDefault(); deleteFile(f); }}>DELETE</a>
             </div>
           ))}
         </div>

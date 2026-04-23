@@ -55,14 +55,37 @@ app.get('/api/channel/:channel/uploads/:filename', (req, res) => {
 // API Routes
 app.get('/api/network-ip', (req, res) => {
   const nets = os.networkInterfaces();
+  let bestIp = '127.0.0.1';
+  let found = false;
+
   for (const name of Object.keys(nets)) {
+    // Skip common virtual/docker interfaces
+    if (/docker|veth|virbr|vmnet|wsl|tun|tap/i.test(name)) continue;
+
     for (const net of nets[name]) {
       if (net.family === 'IPv4' && !net.internal) {
-        return res.json({ ip: net.address });
+        bestIp = net.address;
+        found = true;
+        // Prioritize common local network prefixes
+        if (bestIp.startsWith('192.168.') || bestIp.startsWith('10.')) {
+          return res.json({ ip: bestIp });
+        }
       }
     }
   }
-  res.json({ ip: '127.0.0.1' });
+
+  // Fallback if no matching standard LAN IP was found
+  if (!found) {
+    for (const name of Object.keys(nets)) {
+      for (const net of nets[name]) {
+        if (net.family === 'IPv4' && !net.internal) {
+          return res.json({ ip: net.address });
+        }
+      }
+    }
+  }
+
+  res.json({ ip: bestIp });
 });
 app.get('/api/channels', (req, res) => {
   const channels = fs.readdirSync(BASE_DIR)
